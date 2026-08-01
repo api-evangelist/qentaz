@@ -1,0 +1,210 @@
+generated: '2026-07-20'
+method: generated
+source: https://docs.qentaz.com/documentation/webhooks/introduccion
+x-provenance: >-
+  Generated faithfully from the documented Trazo (Qentaz) webhook payloads and
+  event tables at docs.qentaz.com/documentation/webhooks/*. No AsyncAPI document
+  is published by the provider; this captures the documented event surface so it
+  can be scored and forked. Values are transcribed from the docs, not invented.
+asyncapi: 3.0.0
+info:
+  title: Trazo (Qentaz) Webhooks
+  version: 1.0.0
+  description: >-
+    Outbound webhook events Trazo delivers to a merchant-configured endpoint for
+    collections (cobros / payment), disbursements (dispersiones / payout) and
+    team (equipo) state changes. Trazo signs each delivery with an Authorization
+    header of the form 'Bearer base64(client_id:client_secret_key)' which the
+    receiver validates. A per-charge custom_webhook field can override the
+    globally configured endpoint.
+defaultContentType: application/json
+servers:
+  merchant-endpoint:
+    host: your-configured-endpoint.example.com
+    protocol: https
+    description: >-
+      The HTTPS endpoint you configure (globally, or per-charge via custom_webhook)
+      to receive Trazo webhook deliveries.
+channels:
+  payment:
+    address: /
+    messages:
+      paymentEvent:
+        $ref: '#/components/messages/PaymentEvent'
+    description: Charge (cobro) status-change notifications.
+  payout:
+    address: /
+    messages:
+      payoutEvent:
+        $ref: '#/components/messages/PayoutEvent'
+    description: Disbursement (dispersión) confirmation notifications.
+  team:
+    address: /
+    messages:
+      teamEvent:
+        $ref: '#/components/messages/TeamEvent'
+    description: Team (collector) blocked/activated notifications.
+operations:
+  receivePaymentEvent:
+    action: receive
+    channel:
+      $ref: '#/channels/payment'
+  receivePayoutEvent:
+    action: receive
+    channel:
+      $ref: '#/channels/payout'
+  receiveTeamEvent:
+    action: receive
+    channel:
+      $ref: '#/channels/team'
+components:
+  messages:
+    PaymentEvent:
+      name: paymentEvent
+      title: Payment (cobro) event
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          Authorization:
+            type: string
+            description: 'Bearer base64(client_id:client_secret_key)'
+          Content-Type:
+            type: string
+            const: application/json
+      payload:
+        type: object
+        properties:
+          event:
+            type: object
+            properties:
+              type:
+                type: string
+                const: payment
+              status:
+                type: string
+                enum: [success, review, overdue, failed, declined, blocked]
+          created_at: { type: string }
+          external_reference: { type: string }
+          detail:
+            type: object
+            properties:
+              amount: { type: string }
+              currency: { type: string }
+              description: { type: string }
+              channel: { type: string, enum: [WHATSAPP, EMAIL, LINK] }
+              status: { type: string }
+              process_id: { type: string }
+              payment_method: { type: string }
+              payment_method_source: { type: string }
+              url_receipt: { type: string }
+              payer:
+                type: object
+                properties:
+                  phone: { type: string }
+                  email: { type: string }
+                  first_name: { type: string }
+                  last_name: { type: string }
+                  business_name: { type: string }
+                  user_id_type: { type: string }
+                  user_id_number: { type: string }
+    PayoutEvent:
+      name: payoutEvent
+      title: Payout (dispersión) event
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          Authorization:
+            type: string
+            description: 'Bearer base64(client_id:client_secret_key)'
+          Content-Type:
+            type: string
+            const: application/json
+      payload:
+        type: object
+        properties:
+          event:
+            type: object
+            properties:
+              type:
+                type: string
+                const: payout
+              status: { type: string }
+          created_at: { type: string }
+          external_reference: { type: string }
+          detail:
+            type: object
+            properties:
+              amount: { type: string }
+              currency: { type: string }
+              description: { type: string }
+              channel: { type: string }
+              status: { type: string }
+              process_id: { type: string }
+              url_receipt: { type: string }
+              approver:
+                type: object
+                properties:
+                  phone: { type: string }
+                  email: { type: string }
+                  date: { type: string }
+                  signature: { type: string }
+              receiver:
+                type: object
+                properties:
+                  phone: { type: string }
+                  email: { type: string }
+                  first_name: { type: string }
+                  last_name: { type: string }
+                  user_id_type: { type: string }
+                  user_id_number: { type: string }
+              bank_account:
+                type: object
+                properties:
+                  entity: { type: string }
+                  type: { type: string }
+                  number: { type: string }
+                  reference: { type: string }
+    TeamEvent:
+      name: teamEvent
+      title: Team (collector) event
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          Authorization:
+            type: string
+            description: 'Bearer base64(client_id:client_secret_key)'
+          Content-Type:
+            type: string
+            const: application/json
+      payload:
+        type: object
+        properties:
+          event:
+            type: object
+            properties:
+              type:
+                type: string
+                const: team
+              status:
+                type: string
+                enum: [blocked, active]
+          created_at: { type: string }
+          detail:
+            type: object
+            properties:
+              phone: { type: string }
+              email: { type: string }
+              nickname: { type: string }
+              first_name: { type: string }
+              last_name: { type: string }
+              user_id_type: { type: string }
+              user_id_number: { type: string }
+              role: { type: string }
+              collect_limit: { type: string }
+              current_collect: { type: string }
+              user_country: { type: string }
+              user_state: { type: string }
+              user_city: { type: string }

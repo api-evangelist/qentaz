@@ -1,0 +1,27 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.qentaz.com/documentation/autenticacion/token
+docs: https://docs.qentaz.com/llms.txt
+format: custom-json
+envelope:
+  status: string   # e.g. "unauthorized"
+  code: string     # Q-prefixed provider error code, e.g. "Q001"
+  error: string    # human-readable message (Spanish)
+note: >-
+  Trazo (Qentaz) returns a custom JSON error envelope (status / code / error)
+  rather than RFC 9457 problem+json. Provider error codes are Q-prefixed. The
+  public reference documents envelopes inline per endpoint; only codes verified
+  in the docs are listed below (partial catalog).
+errors:
+- code: Q001
+  http_status: 401
+  status: unauthorized
+  title: Authorization malformed or not enabled
+  message: >-
+    La autorización no se encuentra en el formato correcto o no está habilitada
+    en el sistema de Trazo.
+  remediation: >-
+    Ensure the Authorization header is 'Bearer {auth_key}' (with the Bearer
+    keyword and a space) when calling GET /token, and that the key is enabled in
+    Trazo.
+  source_operation: GET /token

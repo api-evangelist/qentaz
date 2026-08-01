@@ -1,0 +1,16 @@
+generated: '2026-07-20'
+method: searched
+source: https://www.trazo.co/qentaz
+url: https://trazo.trustshare.com
+platform: TrustShare
+certifications: []
+note: >-
+  Trazo publishes a trust/compliance center on the TrustShare platform, linked as
+  "Compliance" from its marketing site footer. The page is JavaScript-rendered so
+  named certifications (e.g. SOC 2 / ISO 27001 / PCI DSS) could not be verified
+  programmatically; none are asserted here. No Compliance pointer is emitted
+  without verified certifications.
+evidence:
+- source: https://www.trazo.co/qentaz
+  kind: footer-compliance-link
+  target: https://trazo.trustshare.com/

@@ -1,0 +1,77 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.qentaz.com/documentation/introduccion
+docs: https://docs.qentaz.com/llms.txt
+summary: >-
+  Cross-cutting request/response semantics for the Trazo (Qentaz) API, captured
+  from the public developer documentation. JSON over HTTPS, two-step bearer auth,
+  URI-path versioning under /v1, rich query-parameter filtering, signed webhooks,
+  and a custom JSON error envelope. No idempotency-key contract is documented.
+authentication:
+  style: two-step-bearer
+  request_header: x-auth-token
+  detail: See authentication/qentaz-authentication.yml
+versioning:
+  style: uri-path
+  current: v1
+  evidence: 'GET /v1/merchant/transaction/'
+content_type: application/json
+multi_tenancy:
+  header: child-id
+  purpose: select an administered (managed / child) account for the request
+pagination:
+  documented: partial
+  style: parameter-filter
+  detail: >-
+    List queries (e.g. GET /v1/merchant/transaction/) accept a broad set of
+    filter parameters rather than a formal cursor/offset pager. Numeric fields
+    support comparison operators via a suffix convention: amount_gt, amount_lt,
+    amount_ge, amount_le (and the same gt/lt/ge/le suffixes on fee). Date-range
+    filtering uses created_at_start_date / created_at_end_date and
+    updated_at_start_date / updated_at_end_date (format AAAA/MM/DD).
+  response_field: transactions[]
+filtering:
+  operators: [gt, lt, ge, le]
+  operator_style: field_suffix
+  example: amount_gt=50000
+  date_range_params:
+  - created_at_start_date
+  - created_at_end_date
+  - updated_at_start_date
+  - updated_at_end_date
+idempotency:
+  documented: false
+  note: >-
+    No idempotency-key header or retry-dedupe contract is documented in the
+    public API reference. Not asserted.
+request_tracing:
+  process_id: >-
+    Transactions and disbursements carry a process_id (UUID) used as the
+    correlation identifier across the reconciliation flow and in webhook payloads.
+  external_reference: >-
+    Each event/transaction also exposes an external_reference short id.
+error_envelope:
+  shape:
+    status: string
+    code: string
+    error: string
+  code_scheme: Q-prefixed (e.g. Q001)
+  format: custom-json
+  detail: See errors/qentaz-error-codes.yml
+webhooks:
+  signature_header: Authorization
+  signature_format: 'Bearer base64(client_id:client_secret_key)'
+  per_transaction_override: custom_webhook field on a charge
+  detail: See asyncapi/qentaz-webhooks-asyncapi.yml
+currency:
+  standard: ISO 4217
+  supported: [COP, USD, MXN]
+dates:
+  formats:
+  - AAAA-MM-DD (request date fields)
+  - AAAA/MM/DD (query date-range parameters)
+cross_reference:
+  authentication: authentication/qentaz-authentication.yml
+  errors: errors/qentaz-error-codes.yml
+  lifecycle: lifecycle/qentaz-lifecycle.yml
+  webhooks: asyncapi/qentaz-webhooks-asyncapi.yml

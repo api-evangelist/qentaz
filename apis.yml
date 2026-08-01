@@ -1,7 +1,16 @@
 aid: qentaz
 name: Qentaz
-description: Qentaz is a company surfaced as a portfolio company of 500-global and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Qentaz (now operating under the brand Trazo) is a Colombian fintech providing
+  collections, payments, disbursements, fraud control and reconciliation
+  infrastructure for modern operations. Its REST API lets businesses generate
+  charges (cobros), send payment links over WhatsApp, email or a hosted link,
+  disburse funds to third parties (dispersiones), manage collector teams and
+  administered (child) accounts, and reconcile cash and digital payments in real
+  time. Authentication is a two-step bearer model (a static auth key exchanged
+  for a short-lived access token), and webhooks push payment, payout and team
+  events with a signed header. The API is versioned under /v1 and returns a
+  custom JSON error envelope with Q-prefixed codes.
 url: https://raw.githubusercontent.com/api-evangelist/qentaz/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -9,12 +18,71 @@ x-backed-by:
 - 500-global
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 10
+  pass: local-v1
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
+image: https://qentaz.com/logo-trazo.svg
 tags:
 - Company
-apis: []
+- Payments
+- Collections
+- Disbursements
+- Reconciliation
+- Fintech
+- Colombia
+- Webhooks
+- Fraud Prevention
+- WhatsApp Payments
+apis:
+- name: Trazo API
+  description: >-
+    REST API for generating collections (cobros), disbursing funds
+    (dispersiones), managing teams and administered accounts, reconciliation and
+    webhooks. Two-step bearer-token authentication; JSON over HTTPS; versioned
+    under /v1.
+  humanURL: https://docs.qentaz.com/documentation/introduccion
+  baseURL: https://api.qentaz.com
+  tags:
+  - Payments
+  - Collections
+  - Disbursements
+  - Reconciliation
+  properties:
+  - type: Documentation
+    url: https://docs.qentaz.com
+  - type: Authentication
+    url: authentication/qentaz-authentication.yml
+  - type: Conventions
+    url: conventions/qentaz-conventions.yml
+  - type: ErrorCatalog
+    url: errors/qentaz-error-codes.yml
+  - type: Lifecycle
+    url: lifecycle/qentaz-lifecycle.yml
+  - type: Webhooks
+    url: asyncapi/qentaz-webhooks-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/qentaz-webhooks-asyncapi.yml
+  - type: DataModel
+    url: data-model/qentaz-data-model.yml
+  - type: Conformance
+    url: conformance/qentaz-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -22,4 +90,50 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://qentaz.com
+  url: https://www.trazo.co
+- type: DeveloperPortal
+  url: https://docs.qentaz.com
+- type: Documentation
+  url: https://docs.qentaz.com/documentation/introduccion
+- type: APIReference
+  url: https://docs.qentaz.com/documentation/llms.txt
+- type: GettingStarted
+  url: https://docs.qentaz.com/documentation/autenticacion/token
+- type: LLMsTxt
+  url: llms/qentaz-llms.txt
+- type: Authentication
+  url: authentication/qentaz-authentication.yml
+- type: Conventions
+  url: conventions/qentaz-conventions.yml
+- type: ErrorCatalog
+  url: errors/qentaz-error-codes.yml
+- type: Lifecycle
+  url: lifecycle/qentaz-lifecycle.yml
+- type: StatusPage
+  url: https://status.qentaz.com
+- type: Webhooks
+  url: asyncapi/qentaz-webhooks-asyncapi.yml
+- type: AsyncAPI
+  url: asyncapi/qentaz-webhooks-asyncapi.yml
+- type: DomainSecurity
+  url: security/qentaz-domain-security.yml
+- type: TrustCenter
+  url: security/qentaz-trust-center.yml
+- type: Conformance
+  url: conformance/qentaz-conformance.yml
+- type: DataModel
+  url: data-model/qentaz-data-model.yml
+- type: GitHubOrganization
+  url: https://github.com/qentaz
+- type: Support
+  url: mailto:hola@trazo.co
+- type: Blog
+  url: https://www.trazo.co/blog
+- type: SignUp
+  url: https://dashboard.trazo.co
+- type: Login
+  url: https://dashboard.trazo.co
+- type: TermsOfService
+  url: https://www.trazo.co/terminos-y-condiciones
+- type: PrivacyPolicy
+  url: https://www.trazo.co/privacidad

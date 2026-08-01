@@ -1,0 +1,22 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.qentaz.com/documentation/introduccion
+versioning:
+  scheme: uri-path
+  current: v1
+  evidence: 'GET /v1/merchant/transaction/'
+  docs: https://docs.qentaz.com/llms.txt
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No published deprecation or sunset (RFC 8594) policy was found.
+sla:
+  url: null
+  uptime_target: null
+status_page: https://status.qentaz.com
+status_page_provider: Better Stack
+support:
+  email: hola@trazo.co
+  integrations_email: integraciones@trazo.co
+  scheduling: https://calendar.app.google/vLQuA6GXwUDvVq729
+deprecated_operations: []

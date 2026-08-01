@@ -1,0 +1,85 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.qentaz.com/llms.txt
+x-provenance: >-
+  Entity graph derived from the documented Trazo (Qentaz) resources and payload
+  fields (no OpenAPI published). Relationships inferred from id-reference fields
+  documented in the API reference.
+entities:
+- name: transaction
+  aka: cobro
+  description: A collection/charge request against a payer, with status lifecycle.
+  key_fields: [external_reference, process_id, status, amount, currency]
+  statuses:
+  - ACCEPTED
+  - BLOCKED
+  - CANCELED
+  - CHARGEBACK
+  - CREATED
+  - CREDIT
+  - EXTERNAL
+  - FAILED
+  - OVERDUE
+  - PENDING
+  - PROCESSING
+  - REFUND_PENDING
+  - REFUND_SUCCESS
+  - RET_PENDING
+  - RET_REVIEW
+  - RET_SUCCESS
+  - REVIEW
+  - SCHEDULED
+  - SUCCESS
+- name: dispersion
+  aka: payout
+  description: A disbursement of funds to a third-party receiver's bank account.
+  key_fields: [external_reference, process_id, status, amount, currency]
+- name: payer
+  description: The customer paying a collection (embedded in transaction).
+  key_fields: [phone, email, user_id_type, user_id_number]
+- name: receiver
+  description: The beneficiary of a disbursement (embedded in dispersion).
+  key_fields: [phone, email, user_id_type, user_id_number]
+- name: user
+  aka: equipo / collector
+  description: A team member / collector operating under the merchant, with a cash collect limit.
+  key_fields: [user_id_type, user_id_number, role, collect_limit]
+- name: managed_account
+  aka: cuenta administrada / child
+  description: A sub-account selected via the child-id header for administered flows.
+  key_fields: [child-id]
+- name: reconciliation_reference
+  aka: conciliacion
+  description: A payment reference created for cash/manual reconciliation.
+- name: invoice
+  description: Accounting-system linkage (Alegra, Siigo, SAP B1, SAP S/4HANA, Odoo) attached to a charge.
+  key_fields: [provider, type, key, id]
+relationships:
+- from: transaction
+  to: payer
+  type: has_one
+  via: payer
+- from: transaction
+  to: invoice
+  type: has_one
+  via: invoice
+- from: transaction
+  to: managed_account
+  type: belongs_to
+  via: child-id
+- from: dispersion
+  to: receiver
+  type: has_one
+  via: receiver
+- from: dispersion
+  to: user
+  type: has_one
+  via: approver
+- from: user
+  to: managed_account
+  type: belongs_to
+  via: child-id
+- from: reconciliation_reference
+  to: transaction
+  type: has_many
+  via: process_id

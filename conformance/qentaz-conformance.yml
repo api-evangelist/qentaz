@@ -1,0 +1,32 @@
+generated: '2026-07-20'
+method: derived
+source: >-
+  Derived from the public Trazo (Qentaz) API documentation
+  (docs.qentaz.com/documentation/*). No OpenAPI is published; standards are
+  asserted from documented request/response conventions.
+standards:
+- id: iso4217-currency
+  conforms: true
+  evidence: currency codes documented as ISO 4217 (COP, USD, MXN)
+- id: oauth2
+  conforms: false
+  evidence: >-
+    custom two-step bearer model (static auth_key exchanged for access_token via
+    GET /token, sent as x-auth-token); no OAuth2 flows/discovery documented
+- id: openid-connect
+  conforms: false
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: custom JSON error envelope (status/code/error, Q-prefixed codes), not application/problem+json
+- id: webhooks-signed
+  conforms: true
+  evidence: outbound webhooks carry an Authorization Bearer signature header
+- id: asyncapi
+  conforms: partial
+  evidence: no provider-published AsyncAPI; event surface captured in asyncapi/qentaz-webhooks-asyncapi.yml
+- id: uri-path-versioning
+  conforms: true
+  evidence: endpoints versioned under /v1
+- id: pci-dss
+  conforms: unknown
+  evidence: card-payment processing implied; compliance published via trust center (trazo.trustshare.com) but certifications not machine-verifiable
